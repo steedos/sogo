@@ -95,7 +95,7 @@
 
             <!-- CONNECT BUTTON -->
             <div layout="row" layout-align="space-between center">
-              <md-button class="md-icon-button"
+              <md-button class="md-icon-button" style="visibility: hidden;"
                          label:aria-label="About"
                          ng-click="app.showAbout()">
                 <md-icon>info</md-icon>
@@ -154,7 +154,7 @@
   <script type="text/ng-template" id="aboutBox.html">
     <md-dialog flex="50" flex-xs="100">
       <md-dialog-content class="md-dialog-content">
-        <p><a href="http://sogo.nu/" target="_new">sogo.nu</a></p>
+        <p><a href="http://www.steedos.com/" target="_new">Steedos Mail</a></p>
         <p>Version <var:string value="version"/> (<var:string value="buildDate" />)</p>
         <br/>
         <p><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
