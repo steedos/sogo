@@ -26,6 +26,7 @@
           <link type="text/css" rel="stylesheet" rsrc:href="css/theme-default.css" />
         </var:if>
         <link type="text/css" rel="stylesheet" rsrc:href="css/styles.css" />
+        <link type="text/css" rel="stylesheet" rsrc:href="css/steedos.css" />
         <var:if condition="hasPageSpecificCSS">
           <link type="text/css" rel="stylesheet" var:href="pageCSSURL"/>
         </var:if>
