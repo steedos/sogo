@@ -12,81 +12,92 @@
   configure.$inject = ['$mdThemingProvider'];
   function configure($mdThemingProvider) {
 
-    /**
-     * Define a new palette or choose any of the default palettes:
-     *
-     * https://material.io/guidelines/style/color.html#color-color-palette
-     */
-    // $mdThemingProvider.definePalette('sogo-paper', {
-    //   '50': 'fcf7f8',
-    //   '100': 'f7f1dc',
-    //   '200': 'ede5ca',
-    //   '300': 'e6d8ba',
-    //   '400': 'e2d2a3',
-    //   '500': 'd6c48d',
-    //   '600': 'baa870',
-    //   '700': '857545',
-    //   '800': '524517',
-    //   '900': '433809',
-    //   '1000': '000000',
-    //   'A100': 'ffffff',
-    //   'A200': 'eeeeee',
-    //   'A400': 'bdbdbd',
-    //   'A700': '616161',
-    //   'contrastDefaultColor': 'dark',
-    //   'contrastLightColors': ['800', '900']
-    // });
-
-    /**
-     * Overwrite the default theme
-     */
-    $mdThemingProvider.definePalette('sogo-paper', {
-      '50': 'fcf7f8',
-      '100': 'f7f1dc',
-      '200': 'ede5ca',
-      '300': 'e6d8ba',
-      '400': 'e2d2a3',
-      '500': 'd6c48d',
-      '600': 'baa870', // busy periods in attendees editor
-      '700': '857545',
-      '800': '524517',
-      '900': '433809',
-      '1000': '000000',
-      'A100': 'ffffff',
-      'A200': 'eeeeee',
-      'A400': 'bdbdbd',
-      'A700': '616161',
+    // Overwrite values to prevent flipping colors on login screen
+    $mdThemingProvider.definePalette('mailcow-blue', {
+      '50': 'E3F2FD',
+      '100': 'BBDEFB',
+      '200': '90CAF9',
+      '300': '64B5F6',
+      '400': '42A5F5',
+      '500': '2196F3',
+      '600': '1E88E5',
+      '700': '1976D2',
+      '800': '1565C0',
+      '900': '0D47A1',
+      '1000': '0D47A1',
+      'A100': '82B1FF',
+      'A200': '448AFF',
+      'A400': '2979ff',
+      'A700': '2962ff',
       'contrastDefaultColor': 'dark',
-      'contrastLightColors': ['800', '900']
+      'contrastLightColors': ['700', '800', '900'],
+      'contrastDarkColors': undefined
     });
 
-    var greyMap = $mdThemingProvider.extendPalette('grey', {
-      '600': '00b0c0', // used when highlighting text in md-autocomplete,
-      '1000': 'baa870' // used as the background color of the busy periods of the attendees editor
+    $mdThemingProvider.definePalette('sogo-green', {
+      '50': 'E3F2FD',
+      '100': 'BBDEFB',
+      '200': '90CAF9',
+      '300': '64B5F6',
+      '400': '42A5F5',
+      '500': '2196F3',
+      '600': '1E88E5',
+      '700': '1976D2',
+      '800': '1565C0',
+      '900': '0D47A1',
+      '1000': '0D47A1',
+      'A100': '82B1FF',
+      'A200': '448AFF',
+      'A400': '2979ff',
+      'A700': '2962ff',
+      'contrastDefaultColor': 'dark',
+      'contrastLightColors': ['700', '800', '900'],
+      'contrastDarkColors': undefined
     });
-    $mdThemingProvider.definePalette('sogo-grey', greyMap);
+
+    $mdThemingProvider.definePalette('default', {
+      '50': 'E3F2FD',
+      '100': 'BBDEFB',
+      '200': '90CAF9',
+      '300': '64B5F6',
+      '400': '42A5F5',
+      '500': '2196F3',
+      '600': '1E88E5',
+      '700': '1976D2',
+      '800': '1565C0',
+      '900': '0D47A1',
+      '1000': '0D47A1',
+      'A100': '82B1FF',
+      'A200': '448AFF',
+      'A400': '2979ff',
+      'A700': '2962ff',
+      'contrastDefaultColor': 'dark',
+      'contrastLightColors': ['700', '800', '900'],
+      'contrastDarkColors': undefined
+    });
 
     $mdThemingProvider.theme('default')
-      .primaryPalette('blue-grey', {
-        'default': '400',  // top toolbar
-        'hue-1': '400',
-        'hue-2': '600',    // sidebar toolbar
-        'hue-3': 'A700'
+      .primaryPalette('mailcow-blue', {
+        'default': '700',  // top toolbar
+        'hue-1': '500',
+        'hue-2': '700',    // sidebar toolbar
+        'hue-3': 'A200'
       })
-      .accentPalette('teal', {
-        'default': '600',  // fab buttons
+      .accentPalette('mailcow-blue', {
+        'default': '800',  // fab buttons
         'hue-1': '50',     // center list toolbar
-        'hue-2': '300',
+        'hue-2': '500',
         'hue-3': 'A700'
       })
-      .backgroundPalette('sogo-grey', {
+      .backgroundPalette('grey', {
         'default': '50',   // center list background
-        'hue-1': '200',
-        'hue-2': '300',
-        'hue-3': '500'
+        'hue-1': '100',
+        'hue-2': '200',
+        'hue-3': '300'
       });
 
     $mdThemingProvider.setDefaultTheme('default');
     $mdThemingProvider.generateThemesOnDemand(false);
+    $mdThemingProvider.alwaysWatchTheme(true);
   }
 })();
