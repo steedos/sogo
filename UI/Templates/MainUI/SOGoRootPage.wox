@@ -30,7 +30,7 @@
       <div class="sg-logo" flex-gt-md="50">
         <div layout="row" class="md-padding">
           <div class="md-flex hide show-gt-md"><!-- push logo to the right on larger screens --></div>
-          <img const:alt="*" class="md-margin" rsrc:src="img/sogo-full.svg"/>
+          <img const:alt="*" class="md-margin" rsrc:src="img/steedos-logo.png"/>
         </div>
       </div>
       <div class="sg-login md-default-theme md-bg md-accent" flex-gt-md="50">
