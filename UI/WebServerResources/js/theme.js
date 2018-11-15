@@ -14,13 +14,13 @@
 
 
     $mdThemingProvider.theme('default')
-      .primaryPalette('blue', {
-        'default': '700',  // top toolbar
+      .primaryPalette('light-blue', {
+        'default': '800',  // top toolbar
         'hue-1': '500',
         'hue-2': '700',    // sidebar toolbar
         'hue-3': 'A200'
       })
-      .accentPalette('blue', {
+      .accentPalette('light-blue', {
         'default': '800',  // fab buttons
         'hue-1': '50',     // center list toolbar
         'hue-2': '500',

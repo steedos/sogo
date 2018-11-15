@@ -14,8 +14,8 @@
 
 
     $mdThemingProvider.theme('default')
-      .primaryPalette('green', {
-        'default': '700',  // top toolbar
+      .primaryPalette('brown', {
+        'default': '800',  // top toolbar
         'hue-1': '500',
         'hue-2': '700',    // sidebar toolbar
         'hue-3': 'A200'
@@ -26,7 +26,7 @@
         'hue-2': '500',
         'hue-3': 'A700'
       })
-      .backgroundPalette('amber', {
+      .backgroundPalette('grey', {
         'default': '50',   // center list background
         'hue-1': '100',
         'hue-2': '200',
