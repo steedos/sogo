@@ -9,7 +9,8 @@ cd sogo
 
 ### 配置文件修改
 ```
-    SOGoUIAdditionalJSFiles = (js/theme.js);
+    SOGoUIAdditionalJSFiles = (steedos/theme.js);
+    SOGoUIxDebugEnabled = YES;
     SOGoPageTitle = "华邮";
     SOGoLanguage = ChineseChina;
     SOGoSupportedLanguages = ("ChineseChina");    

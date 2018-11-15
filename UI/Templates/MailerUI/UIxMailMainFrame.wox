@@ -33,7 +33,7 @@
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
       <md-content class="md-flex" layout="column" md-scroll-y="md-scroll-y"
-                  md-colors="::{ backgroundColor: 'default-background-300' }">
+                  md-colors="::{ backgroundColor: 'default-background-200' }">
         <section class="sg-account-section"
                  layout="column"
                  ng-repeat="account in ::app.accounts track by account.id"
