@@ -28,7 +28,7 @@
   <script type="text/ng-template" id="UIxMailMainFrame">
 
     <!-- Sidenav -->
-    <md-sidenav class="md-sidenav-left md-whiteframe-z1" layout="column" layout-fill="layout-fill"
+    <md-sidenav class="md-sidenav-left" layout="column" layout-fill="layout-fill"
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
