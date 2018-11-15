@@ -2,6 +2,7 @@ cp -r UI/WebServerResources/css /usr/lib64/GNUstep/SOGo/WebServerResources
 cp -r UI/WebServerResources/fonts /usr/lib64/GNUstep/SOGo/WebServerResources
 cp -r UI/WebServerResources/img /usr/lib64/GNUstep/SOGo/WebServerResources
 cp -r UI/WebServerResources/js /usr/lib64/GNUstep/SOGo/WebServerResources
+cp -r UI/WebServerResources/steedos /usr/lib64/GNUstep/SOGo/WebServerResources
 
 cp -r UI/Templates /usr/lib64/GNUstep/SOGo
 
