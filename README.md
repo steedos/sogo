@@ -1,10 +1,11 @@
-### 安装虚拟机
-- 安装虚拟机 https://sogo.nu/download.html#/zeg
-- 用户名密码都是sogo
-- 配置说明 http://wiki.sogo.nu/ZEGReconfiguration
-
-### 开发指引
-- [前台开发文档](https://sogo.nu/files/docs/SOGoDevelopersGuide.html)
+### 部署说明
+先正常安装iredmail
+```
+cd /srv
+git clone https://github.com/steedos/sogo
+cd sogo
+./install.sh
+```
 
 ### 配置文件修改
 ```
@@ -16,3 +17,6 @@
     SOGoMaximumMessageSizeLimit = 102400;
     SOGoTimeZone = "Asia/Shanghai";
 ```
+
+### 开发指引
+- [前台开发文档](https://sogo.nu/files/docs/SOGoDevelopersGuide.html)
