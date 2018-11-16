@@ -34,6 +34,7 @@
       vm.send = send;
       vm.sendState = false;
       vm.toggleFullscreen = toggleFullscreen;
+      vm.showContactsModal = showContactsModal;
       this.firstFocus = true;
 
       _initFileUploader();
@@ -344,6 +345,11 @@
       vm.message.$save();
       if (Preferences.defaults.SOGoMailAutoSave)
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
+    }
+
+    function showContactsModal() {
+      alert(33);
+      debugger;
     }
 
     this.isNew = function () {
