@@ -21,7 +21,4 @@ cd sogo
 
 ### 开发指引
 - [前台开发文档](https://sogo.nu/files/docs/SOGoDevelopersGuide.html)
-
-```
-scp UI/WebServerResources/steedos/* root@mail.steedos.cn:/usr/lib64/GNUstep/SOGo/WebServerResources/steedos
-```
+- 下载 WinSCP，用于传输代码到linux。 https://winscp.net/download/WinSCP-5.13.4-Setup.exe
