@@ -348,8 +348,6 @@
     }
 
     function showContactsModal() {
-      alert(33);
-      debugger;
     }
 
     this.isNew = function () {

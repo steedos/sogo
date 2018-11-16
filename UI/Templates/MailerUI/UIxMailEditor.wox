@@ -63,10 +63,9 @@
 
             <!-- to -->
             <div class="pseudo-input-container">
-              <!-- <label class="pseudo-input-label clickable">
+              <label class="pseudo-input-label clickable">
                 <var:string label:value="To"/>
-              </label> -->
-              <md-button class="pseudo-input-label clickable" ng-click="editor.showContactsModal()"><var:string label:value="To"/></md-button>
+              </label>
 
               <md-chips ng-model="editor.message.editable.to"
                         md-separator-keys="editor.recipientSeparatorKeys"
