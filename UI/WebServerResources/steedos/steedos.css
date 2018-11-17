@@ -22,7 +22,16 @@ md-sidenav {
     width: auto;
 }
 
-@media (max-width: 599px) {
+.view-list {
+    border-right: solid 1px #d8d8d8;
+}
+
+.view-list md-list-item {
+    border-bottom: solid 1px #e5e5e5;
+}
+
+
+@media (max-width: 2599px) {
     #messagesList .md-subheader{
         display: none;
     }
