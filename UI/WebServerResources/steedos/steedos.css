@@ -21,3 +21,9 @@ md-sidenav {
 .sg-toolbar-group-last {
     width: auto;
 }
+
+@media (max-width: 599px) {
+    #messagesList .md-subheader{
+        display: none;
+    }
+}

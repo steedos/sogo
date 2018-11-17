@@ -56,7 +56,7 @@
     });
 
     $mdThemingProvider.theme('default')
-      .primaryPalette('indigo', {
+      .primaryPalette('mailcow-blue', {
         'default': '700',  // top toolbar
         'hue-1': '500',
         'hue-2': '700',    // sidebar toolbar
