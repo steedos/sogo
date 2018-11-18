@@ -63,7 +63,7 @@
 
             <!-- to -->
             <div class="pseudo-input-container">
-              <label class="pseudo-input-label clickable btn-open-contacts">
+              <label class="pseudo-input-label {{ editor.isSteedosNode ? 'clickable btn-open-contacts' : '' }} ">
                 <var:string label:value="To"/>
               </label>
 

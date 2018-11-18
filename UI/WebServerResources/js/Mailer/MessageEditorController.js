@@ -437,7 +437,8 @@
       }
     };
 
-    window.addRecipient = addRecipient
+    window.addRecipient = addRecipient;
+    vm.isSteedosNode = $window.isSteedosNode;
   }
 
   SendMessageToastController.$inject = ['$scope', '$mdToast'];
