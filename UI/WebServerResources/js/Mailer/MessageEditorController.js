@@ -347,11 +347,6 @@
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
     }
 
-    function showContactsModal() {
-      alert(33);
-      debugger;
-    }
-
     this.isNew = function () {
       return typeof this.message.origin == 'undefined';
     };
@@ -442,6 +437,8 @@
         this.firstFocus = false;
       }
     };
+
+    window.addRecipient = addRecipient
   }
 
   SendMessageToastController.$inject = ['$scope', '$mdToast'];
