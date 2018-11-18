@@ -69,6 +69,8 @@
       // Reload page
       $window.location.href = ApplicationBaseURL + 'login?language=' + this.creds.language;
     };
+
+    window.loginController = this;
   }
 
   angular
