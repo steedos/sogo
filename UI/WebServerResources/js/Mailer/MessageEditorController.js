@@ -34,7 +34,6 @@
       vm.send = send;
       vm.sendState = false;
       vm.toggleFullscreen = toggleFullscreen;
-      vm.showContactsModal = showContactsModal;
       this.firstFocus = true;
 
       _initFileUploader();
