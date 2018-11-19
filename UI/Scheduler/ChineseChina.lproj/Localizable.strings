@@ -330,7 +330,7 @@
 
 /* Appointment categories */
 "category_none" = "空";
-"category_labels" = "结婚纪念日,生日,工作,电话,客户,竞争对手,客户,收藏夹,跟进,礼物,假日,想法,会议,事件,其他,个人,项目,公众假日,状态,供应商,旅游,休假";
+"category_labels" = "结婚纪念日,生日,工作,电话,竞争对手,客户,收藏夹,跟进,礼物,假日,想法,会议,事件,其他,个人,项目,公众假日,状态,供应商,旅游,休假";
 "repeat_NEVER" = "不重复";
 "repeat_DAILY" = "每天";
 "repeat_WEEKLY" = "每周";
