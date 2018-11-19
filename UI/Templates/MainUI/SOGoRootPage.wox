@@ -33,7 +33,7 @@
           <img const:alt="*" class="md-margin" rsrc:src="img/steedos-logo.png"/>
         </div>
       </div>
-      <div class="sg-login md-default-theme md-bg md-accent" flex-gt-md="50">
+      <div class="sg-login" flex-gt-md="50">
         <div id="login" class="sg-login-content md-padding">
           <form name="loginForm" layout="column"
                 ng-cloak="ng-cloak"
