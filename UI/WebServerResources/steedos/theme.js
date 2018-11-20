@@ -82,5 +82,6 @@
     if (window.parent.length) {
       document.body.classList.add("in-iframe");
     }
-  }
+
+    labels["me"] = "我";
 })();
