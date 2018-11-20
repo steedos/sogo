@@ -42,3 +42,7 @@ md-sidenav {
         display: none;
     }
 }
+
+.in-iframe .toolbar-main {
+    display: none;
+}
