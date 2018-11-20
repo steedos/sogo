@@ -46,3 +46,11 @@ md-sidenav {
 .in-iframe .toolbar-main {
     display: none;
 }
+
+.sg-account-section .md-menu {
+    display: none;    
+}
+
+.sg-mailbox-list-item .md-menu {
+    display: none;    
+}
