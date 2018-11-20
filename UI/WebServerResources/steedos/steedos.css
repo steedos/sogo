@@ -32,12 +32,20 @@ md-sidenav {
     border-right: solid 1px #d8d8d8;
 }
 
-.view-list md-list-item {
+.view-list md-content .md-subheader {
+    border-bottom: solid 1px #e5e5e5;
+}
+
+.view-list md-content md-list {
+    padding: 0;
+}
+
+.view-list md-content md-list md-list-item {
     border-bottom: solid 1px #e5e5e5;
 }
 
 
-@media (max-width: 2599px) {
+@media (max-width: 599px) {
     #messagesList .md-subheader{
         display: none;
     }
