@@ -276,9 +276,9 @@
           </md-chip-template>
         </md-chips>
         <div class="msg-header-buttons">
-          <label class="md-button md-icon-button" for="fileInput">
+          <label class="md-button" for="fileInput">
             <md-icon>attach_file</md-icon>
-            <!-- <span><var:string label:value="Attach"/></span> -->
+            <span><var:string label:value="Attach"/></span>
           </label>
           <input id="fileInput" class="ng-hide" name="fileInput" type="file" multiple="multiple"
                  nv-file-select="nv-file-select"
