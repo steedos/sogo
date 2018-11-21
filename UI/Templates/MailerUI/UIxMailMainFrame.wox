@@ -8,7 +8,7 @@
     xmlns:label="OGo:label"
     className="UIxPageFrame"
     title="title"
-    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
+    const:jsFiles="vendor/ckeditor/ckeditor.js, vendor/ckeditor/ck.js, Common.js, Preferences.services.js, Contacts.services.js, Scheduler.services.js, Mailer.js, Mailer.services.js, MailboxController.js, vendor/angular-file-upload.min.js, vendor/FileSaver.min.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO" />;
     var userNames = <var:string value="userNames" const:escapeHTML="NO" />;
@@ -32,6 +32,16 @@
                 md-component-id="left" md-is-locked-open="isGtMedium"
                 ng-class="{ 'sg-close': leftIsClose }">
       <var:component className="UIxSidenavToolbarTemplate" />
+      <md-toolbar class="md-hue-2 _md layout-row md-toolbar-tools toolbar-compose  _md-toolbar-transitions" aria-hidden="false">
+        <md-button class="md-button md-ink-ripple" type="button" onclick="$mailboxController.selectedFolder.$filter()" md-labeled-by-tooltip="md-tooltip-9" tabindex="0">
+          <md-icon class="ng-scope material-icons" role="img" aria-label="inbox">inbox</md-icon>
+          <span>收信</span>
+        </md-button>
+        <md-button class="md-button md-ink-ripple" type="button" onclick="$mailboxController.newMessage()" md-labeled-by-tooltip="md-tooltip-9" tabindex="0">
+          <md-icon class="ng-scope material-icons" role="img" aria-label="edit">edit</md-icon>
+          <span>写信</span>
+        </md-button>
+      </md-toolbar>
       <md-content class="md-flex" layout="column" md-scroll-y="md-scroll-y"
                   md-colors="::{ backgroundColor: 'default-background-200' }">
         <section class="sg-account-section"
