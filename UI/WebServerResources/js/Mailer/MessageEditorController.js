@@ -43,7 +43,9 @@
         // Enable auto-save of draft
         vm.autosave = $timeout(vm.autosaveDrafts, Preferences.defaults.SOGoMailAutoSave*1000*60);
       // Set the locale of CKEditor
-      vm.localeCode = Preferences.defaults.LocaleCode;
+      // vm.localeCode = Preferences.defaults.LocaleCode;
+      // vm.localeCode应该是zh-cn，但是现在传入的是zh_CN，所以才显示为繁体了
+      // 可以不设置vm.localeCode值，其会默认使用登录sogo时选中的语言
 
       this.replyPlacement = Preferences.defaults.SOGoMailReplyPlacement;
       if (this.message.origin && this.message.origin.action == 'forward') {
