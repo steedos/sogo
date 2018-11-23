@@ -129,6 +129,15 @@
         //   console.debug(item); console.debug(progress);
         // },
         onSuccessItem: function(item, response, status, headers) {
+          var fileIndex = this.getIndexOfItem(item);
+          if (fileIndex === 0) {
+            // 上传第一个附件时，如果标题为空，则把标题设置为附件的名称
+            var subjectInput = angular.element(document.querySelector("#mailEditor header md-input-container input"));
+            if (!subjectInput.val()) {
+              var fileName = item.file.name;
+              subjectInput.val(fileName).triggerHandler("change");
+            }
+          }
           vm.message.$setUID(response.uid);
           vm.message.$reload({asDraft: false});
           item.inlineUrl = response.lastAttachmentAttrs[0].url;
