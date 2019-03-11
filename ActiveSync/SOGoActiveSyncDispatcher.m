@@ -1613,9 +1613,26 @@ void handle_eas_terminate(int signum)
                   mailObject = [currentCollection lookupName: serverId  inContext: context  acquire: NO];
                   [s appendString: @"<Fetch>"];
                   [s appendString: @"<Status>1</Status>"];
-                  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", collectionId];
-                  [s appendFormat: @"<ServerId xmlns=\"AirSyncBase:\">%@</ServerId>", serverId];
+
+                  if ([[[(id)[theDocumentElement getElementsByTagName: @"LongId"] lastObject] textValue] length])
+                    {
+                      [s appendString: @"<Class xmlns=\"AirSync:\">Email</Class>"];
+                      [s appendFormat: @"<LongId xmlns=\"Search:\">%@</LongId>", [[(id)[theDocumentElement getElementsByTagName: @"LongId"] lastObject] textValue]];
+                    }
+                  else
+                    {
+                      [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", collectionId];
+                      [s appendFormat: @"<ServerId xmlns=\"AirSyncBase:\">%@</ServerId>", serverId];
+                    }
+
                   [s appendString: @"<Properties>"];
+
+                  if ([[theResponse headerForKey: @"Content-Type"] isEqualToString:@"application/vnd.ms-sync.multipart"])
+                    {
+                      [context setObject: parts  forKey: @"MultiParts"];
+                      [context setObject: partLength  forKey: @"MultiPartsLen"];
+                    }
+
                   [s appendString: [mailObject activeSyncRepresentationInContext: context]];
                 }
 
@@ -3049,12 +3066,14 @@ void handle_eas_terminate(int signum)
   SOGoMailObject *mailObject;
   SOGoUserFolder *userFolder;
   EOQualifier *qualifier;
-  NSArray *sortedUIDs;
+  NSArray *sortedUIDs, *a;
   NSMutableString *s;
   NSData *d;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
-  int i, j, total;
+  int i, j, total, begin, startRange, endRange, maxResults, overallTotal;
+
+  overallTotal = 0;
 
   // We build the qualifier and we launch our search operation
   qualifier = [self _qualifierFromMailboxSearchQuery: [(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject]];
@@ -3072,12 +3091,23 @@ void handle_eas_terminate(int signum)
 
   [context setObject: @"8" forKey: @"MIMETruncation"];
 
+  // We check for the maximum number of results to return.
+  a = [[[(id)[theDocumentElement getElementsByTagName: @"Range"] lastObject] textValue] componentsSeparatedByString: @"-"];
+  startRange = [[a objectAtIndex: 0] intValue];
+  begin = startRange;
+  endRange = [[a objectAtIndex: 1] intValue];
+  maxResults = endRange - startRange;
+
+  if (maxResults == 0)
+    maxResults = endRange = 99;
+
   // FIXME: support more than one CollectionId tag + DeepTraversal
   folderId = [[(id)[[(id)[theDocumentElement getElementsByTagName: @"Query"] lastObject] getElementsByTagName: @"CollectionId"] lastObject] textValue];
   folderIdentifiers = [NSMutableArray array];
 
   // Android 6 will send search requests with no collection ID - so we search in all folders.
-  if (!folderId)
+  // Outlook Mobile App sends search requests with CollectionId=0 - We treat this as an all-folder-search.
+  if (!folderId || [folderId isEqualToString: @"0"])
     {
       NSArray *foldersInCache;
       SOGoCacheGCSObject *o;
@@ -3133,7 +3163,15 @@ void handle_eas_terminate(int signum)
 						sortOrdering: @"REVERSE ARRIVAL"
 						    threaded: NO];
       total = [sortedUIDs count];
-      for (j = 0; j < total; j++)
+      overallTotal+=total;
+
+      if (total < startRange)
+        {
+          begin -= total;
+          continue;;
+        }
+
+      for (j = begin; j < total && maxResults >= 0; j++)
 	{
 	  itemId = [[sortedUIDs objectAtIndex: j] stringValue];
 	  mailObject = [currentFolder lookupName: itemId  inContext: context  acquire: NO];
@@ -3141,18 +3179,23 @@ void handle_eas_terminate(int signum)
 	  if ([mailObject isKindOfClass: [NSException class]])
 	    continue;
 
+          maxResults--;
+
 	  [s appendString: @"<Result xmlns=\"Search:\">"];
 	  [s appendFormat: @"<LongId>%@+%@</LongId>", folderId, itemId];
 	  [s appendFormat: @"<CollectionId xmlns=\"AirSyncBase:\">%@</CollectionId>", folderId];
 	  [s appendString: @"<Properties>"];
-	  [s appendFormat: [mailObject activeSyncRepresentationInContext: context]];
+	  [s appendString: [mailObject activeSyncRepresentationInContext: context]];
 	  [s appendString: @"</Properties>"];
 	  [s appendFormat: @"</Result>"];
 	}
     }
 
-  [s appendFormat: @"<Range>0-%d</Range>",(total ? total-1 : 0)];
-  [s appendFormat: @"<Total>%d</Total>", total];
+  if (overallTotal < startRange)
+    overallTotal = 0;
+
+  [s appendFormat: @"<Range>%d-%d</Range>",(overallTotal ? startRange : 0), (overallTotal ? endRange - maxResults - 1 : 0)];
+  [s appendFormat: @"<Total>%d</Total>", overallTotal];
   [s appendString: @"</Store>"];
   [s appendString: @"</Response>"];
   [s appendString: @"</Search>"];
@@ -3630,6 +3673,48 @@ void handle_eas_terminate(int signum)
         }
      }
 
+  if ([(id)[[(id)[theDocumentElement getElementsByTagName: @"UserInformation"] lastObject] getElementsByTagName: @"Get"] lastObject])
+    {
+      NSArray *identities;
+      int i;
+
+      identities = [[context activeUser] allIdentities];
+
+      [s appendString: @"<UserInformation>"];
+      [s appendString: @"<Get>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        {
+          [s appendString: @"<Accounts>"];
+          [s appendString: @"<Account>"];
+          [s appendFormat: @"<UserDisplayName>%@</UserDisplayName>", [[[identities objectAtIndex: 0] objectForKey: @"fullName"] activeSyncRepresentationInContext: context] ];
+        }
+
+      [s appendString: @"<EmailAddresses>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        [s appendFormat: @"<PrimarySmtpAddress>%@</PrimarySmtpAddress>", [[[identities objectAtIndex: 0] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+      else
+        [s appendFormat: @"<SmtpAddress>%@</SmtpAddress>", [[[identities objectAtIndex: 0] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+
+      if ([identities count] > 1)
+        {
+          for (i = 1; i < [identities count]; i++)
+            [s appendFormat: @"<SmtpAddress>%@</SmtpAddress>", [[[identities objectAtIndex: i] objectForKey: @"email"] activeSyncRepresentationInContext: context] ];
+        }
+
+      [s appendString: @"</EmailAddresses>"];
+
+      if ([[context objectForKey: @"ASProtocolVersion"] floatValue] >= 14.1)
+        {
+          [s appendString: @"</Account>"];
+          [s appendString: @"</Accounts>"];
+        }
+
+      [s appendString: @"</Get>"];
+      [s appendString: @"</UserInformation>"];
+    }
+
   [s appendString: @"</Settings>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
@@ -3948,6 +4033,8 @@ void handle_eas_terminate(int signum)
                       [map setObject: [currentAttachment objectForKey: @"mimetype"] forKey: @"content-type"];
                       [map setObject: [currentAttachment objectForKey: @"encoding"] forKey: @"content-transfer-encoding"];
                       [map addObject: [NSString stringWithFormat: @"attachment; filename=\"%@\"", [currentAttachment objectForKey: @"filename"]] forKey: @"content-disposition"];
+                      if ([[currentAttachment objectForKey: @"bodyId"] length])
+                        [map setObject: [currentAttachment objectForKey: @"bodyId"] forKey: @"content-id"];
                       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader: map] autorelease];
 
                       fdata = [[NGMimeFileData alloc] initWithBytes:[bodydata bytes]  length:[bodydata length]];

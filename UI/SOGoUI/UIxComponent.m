@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2016 Inverse inc.
+  Copyright (C) 2007-2019 Inverse inc.
 
   This file is part of SOGo
 
@@ -141,8 +141,6 @@ static SoProduct      *commonProduct      = nil;
 
 - (id) init
 {
-  NSString *language;
-
   if ((self = [super init]))
     {
       _selectedDate = nil;
@@ -150,10 +148,9 @@ static SoProduct      *commonProduct      = nil;
       ASSIGN (userDefaults, [[context activeUser] userDefaults]);
       if (!userDefaults)
         ASSIGN (userDefaults, [SOGoSystemDefaults sharedSystemDefaults]);
-      language = [userDefaults language];
       ASSIGN (languages, [context resourceLookupLanguages]);
       ASSIGN (locale,
-              [[self resourceManager] localeForLanguageNamed: language]);
+              [[self resourceManager] localeForLanguageNamed: [languages objectAtIndex: 0]]);
     }
 
   return self;
@@ -639,6 +636,20 @@ static SoProduct      *commonProduct      = nil;
   return [context valueForKey: @"locale"];
 }
 
+- (NSString *) localeCode
+{
+  // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
+  // Region subtag must be separated by a dash
+  NSMutableString *s = [NSMutableString stringWithString: [locale objectForKey: @"NSLocaleCode"]];
+
+  [s replaceOccurrencesOfString: @"_"
+                     withString: @"-"
+                        options: 0
+                          range: NSMakeRange(0, [s length])];
+
+  return s;
+}
+
 - (WOResourceManager *) pageResourceManager
 {
   WOResourceManager *rm;
@@ -796,8 +807,12 @@ static SoProduct      *commonProduct      = nil;
       return [super performActionNamed: _actionName];
     }
 
-  // We grab the X-XSRF-TOKEN header
+  // We grab the X-XSRF-TOKEN from the header or the URL
   token = [[context request] headerForKey: @"X-XSRF-TOKEN"];
+  if (![token length])
+    {
+      token = [[context request] formValueForKey: @"X-XSRF-TOKEN"];
+    }
 
   // We compare it with our session key
   value = [[context request]

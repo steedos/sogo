@@ -10,27 +10,57 @@
     min-height: auto !important;
     max-height: none !important;
     overflow: visible !important;
+
+    &.letter {
+      width: 8.5in;
+      height: 11in !important;
+      &.landscape {
+        width: 11in;
+        height: 8.5in !important;
+      }
+      [ui-view=listView] {
+        max-width: 3in;
+      }
+    }
+    &.legal {
+      width: 8.5in;
+      height: 14in !important;
+      &.landscape {
+        width: 14in;
+        height: 8.5in !important;
+      }
+    }
+    &.a4 {
+      width: 210mm;
+      height: 297mm;
+      &.landscape {
+        width: 297mm;
+        height: 210mm;
+      }
+      [ui-view=listView] {
+        max-width: 80mm;
+      }
+    }
   }
 
   // Don't print some components
   md-autocomplete,
   md-sidenav,
   md-card-actions,
-  md-fab-speed-dial,
+  md-backdrop,
+  .md-fab,
+  .md-scroll-mask,
+  .md-dialog-container,
   .md-open-menu-container,
   .md-chip-remove-container,
   .toolbar-main,
-  .view-list,
+  .view-list--close,
   .view-detail .sg-reversible.sg-flip .sg-face,
-  .view-detail .sg-reversible:not(.sg-flip) .sg-back,
-  .sg-no-print
-   {
+  .view-detail .sg-reversible:not(.sg-flip) .sg-back {
     display: none !important;
   }
 
   // Horizontal flex layout must be ignored for element that could spawn multiple pages
-  .view[layout="row"],
-  section > div[layout="row"],
   .msg-body > [layout="row"],
   .mailer_mailcontent[layout="row"] {
     display: block !important;
@@ -45,21 +75,22 @@
 
   // Content must be visible to be printed on multiple pages
   main,
+  body.popup .view-detail,
   section,
   md-content,
   md-card,
   md-card-content,
   md-card-content pre,
-  .view-detail,
   .view-detail .sg-reversible,
   .view-detail .sg-reversible:not(.sg-flip) .sg-face,
-  .view-detail .sg-reversible.sg-flip .sg-back {
+  .view-detail .sg-reversible.sg-flip .sg-back,
+  .sg-block-print {
     display: block !important;
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
     position: relative !important;
-    min-width: 100%; // compensate for flex display
+    flex: none;
   }
 
   // Remove shadow from Cards

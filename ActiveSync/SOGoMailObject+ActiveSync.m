@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSTimeZone.h>
+#import <Foundation/NSValue.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
@@ -970,7 +971,7 @@ struct GlobalObjectId {
       if ([event startDate])
         [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationInContext: context]];
       
-      if ([event timeStampAsDate])
+      if ([event timeStampAsDate] && [[event timeStampAsDate] dayOfMonth] > 0 && [[event timeStampAsDate] monthOfYear] > 0)
         [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationInContext: context]];
       else if ([event created])
         [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationInContext: context]];
@@ -1216,10 +1217,22 @@ struct GlobalObjectId {
           else
              [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
 
-          [s appendFormat: @"<Truncated>%d</Truncated>", truncated];
-          [s appendFormat: @"<Preview></Preview>"];
-          [s appendFormat: @"<Data>%@</Data>", content];
-          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+          if ([[context objectForKey: @"MultiPartsLen"] isKindOfClass: [NSArray class]])
+            {
+              [[context objectForKey: @"MultiPartsLen"]  addObject: [NSNumber numberWithInteger: [sanitizedData length]]];
+              [[context objectForKey: @"MultiParts"]  appendData: sanitizedData];
+
+              [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+              [s appendFormat: @"<Part xmlns=\"ItemOperations:\">%d</Part>", [[context objectForKey: @"MultiPartsLen"] count]];
+            }
+          else
+            {
+              [s appendFormat: @"<Truncated>%d</Truncated>", truncated];
+              [s appendFormat: @"<Preview></Preview>"];
+              [s appendFormat: @"<Data>%@</Data>", content];
+              [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+            }
+
           [s appendString: @"</Body>"];
        }
     }
@@ -1260,7 +1273,7 @@ struct GlobalObjectId {
             {
               if ([[value objectForKey: @"bodyId"] length])
                 {
-                  [s appendFormat: @"<ContentId>%@</ContentId>", [[value objectForKey: @"bodyId"] activeSyncRepresentationInContext: context]];
+                  [s appendFormat: @"<ContentId>%@</ContentId>", [[[value objectForKey: @"bodyId"] stringByTrimmingCharactersInSet: [NSCharacterSet characterSetWithCharactersInString: @"<>"]] activeSyncRepresentationInContext: context]];
                   [s appendFormat: @"<IsInline>%d</IsInline>", 1];
                 }
 
